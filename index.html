@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maple Grove Public Library — Homepage Redesign Case Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink-navy:#22314f;
+    --ink-navy-deep:#182238;
+    --cream:#f1e9d8;
+    --cream-soft:#f8f3e8;
+    --stamp-red:#b23a2e;
+    --lamp-green:#3f5c4c;
+    --charcoal:#24211d;
+    --line:#d8cdb2;
+    --gray-1:#6b6b6b;
+    --gray-2:#9a9a9a;
+    --gray-3:#c9c9c9;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:'Source Serif 4', serif;
+    color:var(--charcoal);
+    background:var(--cream-soft);
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{font-family:'Fraunces', serif; margin:0; letter-spacing:-0.01em;}
+  .mono{font-family:'Space Mono', monospace;}
+
+  /* ===== Case study chrome ===== */
+  .case-header{
+    background:var(--ink-navy-deep);
+    color:var(--cream);
+    padding:28px 32px 0 32px;
+    position:sticky; top:0; z-index:50;
+  }
+  .case-header-top{
+    display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:12px;
+    max-width:1200px; margin:0 auto 20px auto;
+  }
+  .case-header-top h1{font-size:22px; color:var(--cream); font-weight:600;}
+  .case-header-top .tag{
+    font-family:'Space Mono', monospace; font-size:11px; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--stamp-red); background:var(--cream); padding:4px 10px; border-radius:2px; font-weight:700;
+  }
+  .tabs{
+    max-width:1200px; margin:0 auto; display:flex; gap:4px; overflow-x:auto;
+  }
+  .tab-btn{
+    font-family:'Space Mono', monospace; font-size:12px; letter-spacing:.03em;
+    background:none; border:none; color:#b9c1d4; padding:12px 18px; cursor:pointer;
+    border-bottom:3px solid transparent; white-space:nowrap; transition:.15s;
+  }
+  .tab-btn:hover{color:var(--cream);}
+  .tab-btn.active{color:var(--cream); border-bottom-color:var(--stamp-red);}
+
+  .view{display:none; max-width:1200px; margin:0 auto; padding:40px 32px 90px 32px;}
+  .view.active{display:block;}
+
+  .view-intro{max-width:720px; margin-bottom:36px;}
+  .eyebrow{
+    font-family:'Space Mono', monospace; font-size:11px; text-transform:uppercase; letter-spacing:.1em;
+    color:var(--stamp-red); margin-bottom:10px; display:block; font-weight:700;
+  }
+  .view-intro h2{font-size:30px; margin-bottom:12px;}
+  .view-intro p{color:var(--gray-1); font-size:16px; line-height:1.6;}
+
+  /* ===== BEFORE view ===== */
+  .before-shell{
+    border:2px solid var(--gray-3);
+    background:#fdfdfb;
+  }
+  .before-topbar{
+    background:#003366; color:#fff; font-family:Arial,Helvetica,sans-serif; font-size:11px;
+    padding:4px 10px; display:flex; justify-content:space-between;
+  }
+  .before-banner{
+    background:linear-gradient(#e8e8e8,#cfcfcf); padding:10px 14px; border-bottom:1px solid #999;
+    font-family:Arial,Helvetica,sans-serif;
+  }
+  .before-banner-inner{display:flex; align-items:center; justify-content:space-between;}
+  .before-title{font-family:"Times New Roman",serif; font-size:26px; font-weight:bold; color:#003366;}
+  .before-title small{display:block; font-size:11px; font-weight:normal; color:#555;}
+  .before-nav{
+    background:#003366; font-family:Arial,Helvetica,sans-serif; font-size:12px;
+    display:flex; flex-wrap:wrap; border-bottom:3px solid #001f3f;
+  }
+  .before-nav a{
+    color:#fff; text-decoration:none; padding:7px 10px; border-right:1px solid #335580;
+  }
+  .before-body{display:flex; font-family:Arial,Helvetica,sans-serif; font-size:12px;}
+  .before-sidebar{
+    width:170px; background:#eee; border-right:1px solid #ccc; padding:10px;
+  }
+  .before-sidebar h4{font-size:12px; background:#ccc; padding:4px 6px; margin-bottom:6px;}
+  .before-sidebar a{display:block; color:#00c; text-decoration:underline; margin-bottom:5px; font-size:11px;}
+  .before-main{flex:1; padding:12px; line-height:1.5; color:#222;}
+  .before-marquee{
+    background:#ffcc00; color:#900; font-weight:bold; text-align:center; padding:5px; font-size:12px; margin-bottom:10px;
+  }
+  .before-blurb{font-size:12px; margin-bottom:14px;}
+  .before-linklist a{color:#00c; text-decoration:underline; font-size:12px; display:inline-block; margin-right:10px;}
+  .before-table{width:100%; border-collapse:collapse; font-size:11px; margin-top:12px;}
+  .before-table td{border:1px solid #ccc; padding:5px;}
+  .before-footer{
+    background:#eee; border-top:1px solid #ccc; font-family:Arial,Helvetica,sans-serif; font-size:10px;
+    color:#666; padding:10px; text-align:center;
+  }
+
+  .problem-grid{
+    margin-top:28px; display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px;
+  }
+  .problem-card{
+    background:#fdfdfb; border:1px solid var(--line); border-left:4px solid var(--stamp-red);
+    padding:16px 18px;
+  }
+  .problem-card .num{font-family:'Space Mono',monospace; font-size:11px; color:var(--stamp-red); font-weight:700;}
+  .problem-card h4{font-size:15px; margin:6px 0 6px 0; font-family:'Source Serif 4', serif; font-weight:600;}
+  .problem-card p{font-size:13.5px; color:var(--gray-1); line-height:1.5; margin:0;}
+
+  /* ===== LOW-FI view ===== */
+  .wire-shell{
+    border:1.5px dashed #888; background:#fbfbfa; color:#555;
+    font-family:'Space Mono', monospace;
+  }
+  .wire-shell *{font-family:'Space Mono', monospace;}
+  .wire-block{border:1.5px dashed #888; padding:10px; position:relative;}
+  .wire-label{
+    position:absolute; top:-9px; left:8px; background:#fbfbfa; padding:0 6px; font-size:10px; color:var(--stamp-red);
+  }
+  .wire-x{
+    background:repeating-linear-gradient(45deg, #e2e2e2, #e2e2e2 6px, #f2f2f2 6px, #f2f2f2 12px);
+    border:1.5px dashed #999;
+  }
+  .wire-nav{display:flex; justify-content:space-between; align-items:center; padding:14px 18px;}
+  .wire-nav-links{display:flex; gap:16px; font-size:11px;}
+  .wire-hero{padding:34px 18px; text-align:center; margin:14px;}
+  .wire-hero .lines{max-width:420px; margin:0 auto;}
+  .wire-hero .line{height:12px; background:#d5d5d5; margin:8px auto; border-radius:2px;}
+  .wire-search{
+    height:40px; border:1.5px dashed #888; max-width:480px; margin:16px auto 0 auto;
+    display:flex; align-items:center; justify-content:space-between; padding:0 12px; font-size:11px;
+  }
+  .wire-quadgrid{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:14px;}
+  .wire-tile{border:1.5px dashed #888; padding:14px 10px; text-align:center; font-size:11px;}
+  .wire-tile .icon{width:28px; height:28px; border:1.5px dashed #999; border-radius:50%; margin:0 auto 8px auto;}
+  .wire-strip{margin:14px; border:1.5px dashed #888; padding:14px;}
+  .wire-cards{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:10px;}
+  .wire-card{border:1.5px dashed #999; padding:10px;}
+  .wire-card .thumb{height:70px;}
+  .wire-footer{margin:14px; border:1.5px dashed #888; padding:16px; display:flex; justify-content:space-between; font-size:11px;}
+  .wire-annotations{
+    margin-top:26px; background:#fff; border:1px solid var(--line); padding:18px 20px;
+  }
+  .wire-annotations h4{font-family:'Space Mono',monospace; font-size:12px; text-transform:uppercase; letter-spacing:.06em; color:var(--stamp-red); margin-bottom:10px;}
+  .wire-annotations ol{margin:0; padding-left:18px; font-size:13.5px; color:var(--charcoal); line-height:1.8;}
+
+  /* ===== HIGH-FI view ===== */
+  .hifi-shell{
+    background:var(--cream); border:1px solid var(--line); box-shadow:0 20px 50px -20px rgba(24,34,56,.35);
+    overflow:hidden;
+  }
+  .hifi-topbar{
+    background:var(--ink-navy-deep); color:#cfd6e6; font-family:'Space Mono',monospace; font-size:11px;
+    padding:7px 28px; display:flex; justify-content:space-between; letter-spacing:.02em;
+  }
+  .hifi-nav{
+    background:var(--ink-navy); padding:16px 28px; display:flex; align-items:center; justify-content:space-between;
+  }
+  .hifi-logo{display:flex; align-items:center; gap:10px;}
+  .hifi-logo .mark{
+    width:34px; height:34px; border:2px solid var(--cream); border-radius:3px; display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces',serif; color:var(--cream); font-weight:700; font-size:16px; transform:rotate(-4deg);
+  }
+  .hifi-logo .word{color:var(--cream); font-family:'Fraunces',serif; font-size:18px; font-weight:600; line-height:1.1;}
+  .hifi-logo .word small{display:block; font-family:'Space Mono',monospace; font-size:9px; color:#9fb0cf; letter-spacing:.1em; text-transform:uppercase; font-weight:400;}
+  .hifi-navlinks{display:flex; gap:28px; list-style:none; margin:0; padding:0;}
+  .hifi-navlinks a{color:#dbe1ee; text-decoration:none; font-size:14px; font-weight:500;}
+  .hifi-navlinks a:hover{color:#fff;}
+  .hifi-navcta{
+    background:var(--stamp-red); color:#fff; font-size:13px; font-weight:700; padding:9px 16px; border-radius:3px;
+    text-decoration:none; font-family:'Space Mono',monospace; letter-spacing:.02em;
+  }
+
+  .hifi-hero{
+    position:relative; padding:64px 28px 56px 28px; text-align:center;
+    background:
+      radial-gradient(circle at 15% 20%, rgba(178,58,46,.06), transparent 40%),
+      radial-gradient(circle at 85% 80%, rgba(63,92,76,.08), transparent 45%),
+      var(--cream);
+    border-bottom:1px solid var(--line);
+  }
+  .hifi-stamp{
+    display:inline-flex; align-items:center; gap:8px; border:1.5px solid var(--stamp-red); color:var(--stamp-red);
+    font-family:'Space Mono',monospace; font-size:11px; letter-spacing:.08em; text-transform:uppercase; font-weight:700;
+    padding:5px 12px; border-radius:20px; transform:rotate(-2deg); margin-bottom:22px;
+  }
+  .hifi-hero h1{font-size:44px; line-height:1.12; color:var(--ink-navy-deep); max-width:680px; margin:0 auto 16px auto; font-weight:600;}
+  .hifi-hero h1 em{color:var(--stamp-red); font-style:italic;}
+  .hifi-hero p{max-width:520px; margin:0 auto 32px auto; color:#54503f; font-size:16px; line-height:1.6;}
+  .hifi-search{
+    max-width:560px; margin:0 auto; background:#fff; border:2px solid var(--ink-navy); border-radius:6px;
+    display:flex; align-items:center; padding:6px 6px 6px 18px; box-shadow:4px 4px 0 var(--ink-navy);
+  }
+  .hifi-search input{
+    border:none; outline:none; flex:1; font-family:'Source Serif 4',serif; font-size:15px; padding:10px 6px; background:transparent;
+  }
+  .hifi-search button{
+    background:var(--stamp-red); color:#fff; border:none; padding:11px 20px; border-radius:4px; font-family:'Space Mono',monospace;
+    font-weight:700; font-size:13px; cursor:pointer; letter-spacing:.02em;
+  }
+  .hifi-search-hint{margin-top:10px; font-family:'Space Mono',monospace; font-size:11px; color:#8b8672; letter-spacing:.02em;}
+
+  .hifi-quicklinks{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line);
+    border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+  }
+  .ql-tile{
+    background:var(--cream-soft); padding:26px 22px; text-decoration:none; color:var(--charcoal);
+    display:flex; flex-direction:column; gap:8px; transition:.15s;
+  }
+  .ql-tile:hover{background:#fff;}
+  .ql-tile .ico{
+    width:38px; height:38px; border-radius:8px; display:flex; align-items:center; justify-content:center;
+    font-size:18px; color:#fff;
+  }
+  .ql-tile h4{font-family:'Fraunces',serif; font-size:16px; font-weight:600;}
+  .ql-tile span{font-size:13px; color:var(--gray-1); font-family:'Source Serif 4',serif;}
+  .ql-tile .arrow{margin-top:auto; font-family:'Space Mono',monospace; font-size:12px; color:var(--stamp-red); font-weight:700;}
+
+  .hifi-section{padding:56px 28px;}
+  .hifi-section.alt{background:var(--cream-soft);}
+  .section-head{display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:28px; flex-wrap:wrap; gap:10px;}
+  .section-head .eyebrow{margin-bottom:6px;}
+  .section-head h2{font-size:26px; color:var(--ink-navy-deep);}
+  .section-head a{font-family:'Space Mono',monospace; font-size:12px; color:var(--stamp-red); text-decoration:none; font-weight:700;}
+
+  .events-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:20px;}
+  .event-card{background:#fff; border:1px solid var(--line); border-radius:6px; overflow:hidden;}
+  .event-date{
+    background:var(--ink-navy); color:var(--cream); padding:12px 16px; display:flex; align-items:baseline; gap:8px;
+    font-family:'Space Mono',monospace;
+  }
+  .event-date .day{font-size:22px; font-weight:700;}
+  .event-date .mo{font-size:11px; text-transform:uppercase; letter-spacing:.06em;}
+  .event-card-body{padding:16px;}
+  .event-card-body h4{font-family:'Source Serif 4',serif; font-size:16px; font-weight:600; margin-bottom:6px;}
+  .event-card-body p{font-size:13px; color:var(--gray-1); margin:0; line-height:1.5;}
+  .event-tag{
+    display:inline-block; margin-top:10px; font-family:'Space Mono',monospace; font-size:10px; letter-spacing:.05em;
+    text-transform:uppercase; color:var(--lamp-green); background:#e7ede9; padding:3px 8px; border-radius:3px; font-weight:700;
+  }
+
+  .hours-panel{
+    display:grid; grid-template-columns:1.1fr .9fr; gap:36px; align-items:center;
+  }
+  .hours-card{background:var(--ink-navy-deep); color:var(--cream); border-radius:8px; padding:30px 32px;}
+  .hours-card h3{font-size:20px; margin-bottom:16px; color:var(--cream);}
+  .hours-row{display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(241,233,216,.14); font-size:14px;}
+  .hours-row.today{color:#f4c78a; font-weight:700;}
+  .hours-panel .copy h3{font-size:24px; color:var(--ink-navy-deep); margin-bottom:12px;}
+  .hours-panel .copy p{color:#54503f; line-height:1.6; margin-bottom:18px;}
+  .btn-outline{
+    display:inline-block; border:1.5px solid var(--ink-navy); color:var(--ink-navy); text-decoration:none; font-weight:700;
+    font-family:'Space Mono',monospace; font-size:12px; padding:10px 18px; border-radius:4px; letter-spacing:.02em;
+  }
+
+  .hifi-footer{background:var(--ink-navy-deep); color:#b9c1d4; padding:48px 28px 24px 28px;}
+  .footer-grid{display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr; gap:32px; margin-bottom:32px;}
+  .footer-grid h5{font-family:'Space Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:#7f8bab; margin-bottom:14px;}
+  .footer-grid a{display:block; color:#dbe1ee; text-decoration:none; font-size:13.5px; margin-bottom:9px;}
+  .footer-bottom{border-top:1px solid rgba(255,255,255,.1); padding-top:18px; font-family:'Space Mono',monospace; font-size:11px; color:#7f8bab; display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;}
+
+  @media (max-width:900px){
+    .hifi-quicklinks{grid-template-columns:1fr 1fr;}
+    .events-grid{grid-template-columns:1fr;}
+    .hours-panel{grid-template-columns:1fr;}
+    .footer-grid{grid-template-columns:1fr 1fr;}
+    .before-body{flex-direction:column;}
+    .wire-quadgrid{grid-template-columns:1fr 1fr;}
+  }
+
+  /* ===== NOTES view ===== */
+  .notes-list{display:flex; flex-direction:column; gap:0;}
+  .note-row{
+    display:grid; grid-template-columns:40px 1fr 1fr 1.1fr; gap:20px; padding:20px 0; border-bottom:1px solid var(--line);
+    align-items:start;
+  }
+  .note-row.head{
+    font-family:'Space Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--gray-1);
+    padding-bottom:10px; border-bottom:2px solid var(--ink-navy);
+  }
+  .note-num{font-family:'Space Mono',monospace; color:var(--stamp-red); font-weight:700; font-size:13px;}
+  .note-col h5{font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--gray-2); font-family:'Space Mono',monospace; margin-bottom:5px; font-weight:400;}
+  .note-col p{margin:0; font-size:14px; line-height:1.55;}
+  .note-old{color:#8a3128;}
+  .note-new{color:var(--lamp-green);}
+  @media (max-width:800px){
+    .note-row{grid-template-columns:1fr; gap:6px;}
+    .note-row.head{display:none;}
+    .note-row{padding:16px 0;}
+    .note-col{margin-bottom:4px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="case-header-top">
+    <h1>Maple Grove Public Library — Homepage Redesign</h1>
+    <span class="tag">Case Study</span>
+  </div>
+  <div class="tabs">
+    <button class="tab-btn active" data-view="before">01 · The Problem</button>
+    <button class="tab-btn" data-view="lofi">02 · Low‑Fi Wireframe</button>
+    <button class="tab-btn" data-view="hifi">03 · High‑Fi Mockup</button>
+    <button class="tab-btn" data-view="notes">04 · Usability Notes</button>
+  </div>
+</div>
+
+<!-- ============ VIEW 1: BEFORE / PROBLEM ============ -->
+<section class="view active" id="before">
+  <div class="view-intro">
+    <span class="eyebrow">Subject &amp; brief</span>
+    <h2>A small-town library site, stuck in 2004</h2>
+    <p>Maple Grove Public Library is a fictional stand-in for a genre of site that's real and extremely common: small municipal and library homepages built on old CMS templates, edited by whoever has time, and never redesigned. The pattern below (table layout, buried search, a wall of blue underlined links, no visual hierarchy) is representative of thousands of real small-town government and library sites still in production today.</p>
+  </div>
+
+  <div class="before-shell">
+    <div class="before-topbar">
+      <span>Maple Grove, Somewhere County — Official Website</span>
+      <span>Text Size: A | A+ | A++ &nbsp; | &nbsp; Español</span>
+    </div>
+    <div class="before-banner">
+      <div class="before-banner-inner">
+        <div class="before-title">MAPLE GROVE PUBLIC LIBRARY
+          <small>"Serving the community since 1962" — A Department of Maple Grove Municipal Government</small>
+        </div>
+      </div>
+    </div>
+    <div class="before-nav">
+      <a href="#">HOME</a><a href="#">ABOUT US</a><a href="#">BOARD OF TRUSTEES</a><a href="#">HOURS &amp; LOCATIONS</a>
+      <a href="#">CATALOG</a><a href="#">DATABASES</a><a href="#">CHILDREN'S SERVICES</a><a href="#">TEEN ZONE</a>
+      <a href="#">ADULT PROGRAMS</a><a href="#">MEETING ROOMS</a><a href="#">FRIENDS OF THE LIBRARY</a>
+      <a href="#">FORMS &amp; POLICIES</a><a href="#">EMPLOYMENT</a><a href="#">CONTACT</a>
+    </div>
+    <div class="before-body">
+      <div class="before-sidebar">
+        <h4>QUICK LINKS</h4>
+        <a href="#">» Renew Your Card</a>
+        <a href="#">» Interlibrary Loan Form (PDF)</a>
+        <a href="#">» Meeting Room Request Form</a>
+        <a href="#">» Overdue Fine Schedule</a>
+        <a href="#">» Board Meeting Minutes 2011-2024</a>
+        <a href="#">» Volunteer Application</a>
+        <a href="#">» Wi-Fi Acceptable Use Policy</a>
+        <a href="#">» Genealogy Resources</a>
+        <a href="#">» Tax Form Availability Notice</a>
+        <h4 style="margin-top:14px;">SEARCH CATALOG</h4>
+        <div style="font-size:10px;">Go to Catalog page, select branch, then click "Search" &raquo;</div>
+      </div>
+      <div class="before-main">
+        <div class="before-marquee">★ NOTICE: Library will be CLOSED Monday for staff training ★</div>
+        <div class="before-blurb">
+          <b>Welcome to the Maple Grove Public Library website.</b> The Library's mission is to provide free and equal access to information, ideas and knowledge through a variety of formats and services in order to enrich, empower and support all members of our community, consistent with the vision and values of the Maple Grove Municipal Government's Strategic Plan (2018, amended 2021). Please note that as of March, hours have changed. See below for a complete listing of all department contacts.
+        </div>
+        <table class="before-table">
+          <tr><td width="30%"><b>Main Branch Hours</b></td><td>Mon–Thu 9am–8pm, Fri–Sat 9am–5pm, Sun Closed</td></tr>
+          <tr><td><b>Elm St. Branch Hours</b></td><td>Mon, Wed, Fri 10am–5pm, Tue &amp; Thu Closed, Sat 10am–2pm</td></tr>
+          <tr><td><b>Bookmobile Schedule</b></td><td>See PDF under Forms &amp; Policies for current stops (updated quarterly)</td></tr>
+          <tr><td><b>Holiday Closures</b></td><td>See Board Meeting Minutes, October session, item 4b</td></tr>
+        </table>
+        <div class="before-linklist" style="margin-top:14px;">
+          <a href="#">Newsletter Archive</a>
+          <a href="#">Summer Reading Program 2019 (archived)</a>
+          <a href="#">Local History Room</a>
+          <a href="#">Notary Services</a>
+          <a href="#">Fax &amp; Copy Fees</a>
+          <a href="#">RSS</a>
+        </div>
+      </div>
+    </div>
+    <div class="before-footer">
+      © 2009–2024 Maple Grove Municipal Government. Best viewed in 1024×768. Problems with this site? Email webmaster@maplegrove.gov.
+    </div>
+  </div>
+
+  <div class="problem-grid">
+    <div class="problem-card">
+      <span class="num">01</span>
+      <h4>Search is three clicks deep</h4>
+      <p>The catalog search — the single most-used feature on any library site — isn't on the homepage at all. Visitors are instructed, in text, to navigate to another page first.</p>
+    </div>
+    <div class="problem-card">
+      <span class="num">02</span>
+      <h4>No hierarchy between urgent and archival</h4>
+      <p>A closure notice, the library's mission statement, and a link to 2011 board minutes all carry equal visual weight. Nothing tells a visitor what's timely.</p>
+    </div>
+    <div class="problem-card">
+      <span class="num">03</span>
+      <h4>Fourteen-item top nav</h4>
+      <p>Every department got a nav slot at some point and none were ever retired. Card catalog logic applied to a website: everything filed, nothing found.</p>
+    </div>
+    <div class="problem-card">
+      <span class="num">04</span>
+      <h4>Not usable on a phone</h4>
+      <p>Fixed-width table layout with no responsive rules. On a phone this either scrolls sideways or collapses into an unreadable single column, depending on browser.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VIEW 2: LOW-FI WIREFRAME ============ -->
+<section class="view" id="lofi">
+  <div class="view-intro">
+    <span class="eyebrow">Step 2</span>
+    <h2>Wireframe: reordering by what people actually come for</h2>
+    <p>Before any visual design, the low-fi pass answers one question: what should exist on this page, and in what order? Catalog search moves to the very top, above the fold, unmissable. Everything archival (minutes, policies, forms) moves off the homepage entirely into their own pages.</p>
+  </div>
+
+  <div class="wire-shell">
+    <div class="wire-nav wire-block">
+      <span class="wire-label">nav</span>
+      <div class="wire-x" style="width:110px; height:22px;"></div>
+      <div class="wire-nav-links">
+        <span>Catalog</span><span>Events</span><span>Hours</span><span>About</span><span>Get a Card</span>
+      </div>
+    </div>
+
+    <div class="wire-hero wire-block">
+      <span class="wire-label">hero</span>
+      <div class="lines">
+        <div class="line" style="width:70%;"></div>
+        <div class="line" style="width:55%;"></div>
+      </div>
+      <div class="wire-search">
+        <span>[ search the catalog — books, movies, events... ]</span>
+        <span>[ Search ]</span>
+      </div>
+    </div>
+
+    <div class="wire-quadgrid">
+      <div class="wire-tile"><div class="icon"></div>Get a Library Card</div>
+      <div class="wire-tile"><div class="icon"></div>Reserve a Room</div>
+      <div class="wire-tile"><div class="icon"></div>Kids &amp; Teens</div>
+      <div class="wire-tile"><div class="icon"></div>Events Calendar</div>
+    </div>
+
+    <div class="wire-strip wire-block">
+      <span class="wire-label">upcoming events</span>
+      <div class="wire-cards">
+        <div class="wire-card"><div class="wire-x thumb"></div><div class="line" style="width:80%;"></div><div class="line" style="width:50%;"></div></div>
+        <div class="wire-card"><div class="wire-x thumb"></div><div class="line" style="width:80%;"></div><div class="line" style="width:50%;"></div></div>
+        <div class="wire-card"><div class="wire-x thumb"></div><div class="line" style="width:80%;"></div><div class="line" style="width:50%;"></div></div>
+      </div>
+    </div>
+
+    <div class="wire-strip wire-block">
+      <span class="wire-label">hours + today's status</span>
+      <div style="display:flex; gap:16px;">
+        <div class="wire-x" style="flex:1; height:90px;"></div>
+        <div style="flex:1;">
+          <div class="line" style="width:90%;"></div>
+          <div class="line" style="width:70%;"></div>
+          <div class="line" style="width:60%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="wire-footer">
+      <span>[ address / hours ]</span>
+      <span>[ sitemap links ]</span>
+      <span>[ social / newsletter ]</span>
+    </div>
+  </div>
+
+  <div class="wire-annotations">
+    <h4>Design rationale</h4>
+    <ol>
+      <li>Search moves from "buried in a sub-page" to the first thing in the hero — it's the primary reason most visitors land on the site.</li>
+      <li>A four-tile quick-action grid replaces the fourteen-item nav for the tasks that make up most real traffic: card sign-up, room booking, kids' programs, events.</li>
+      <li>Events get a visual card treatment (date, title, one line of context) instead of a bare text link list, so the page communicates "this is alive and current."</li>
+      <li>Hours move up and get a visible "open now / closed" state instead of requiring a visitor to read a table and do the math themselves.</li>
+      <li>Everything archival — minutes, policies, forms, historical program pages — is deliberately cut from the homepage and pushed to dedicated sub-pages, reachable from the footer.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ VIEW 3: HIGH-FI MOCKUP ============ -->
+<section class="view" id="hifi">
+  <div class="view-intro">
+    <span class="eyebrow">Step 3</span>
+    <h2>Visual design: a reading room, not a filing cabinet</h2>
+    <p>The direction leans into the library's physical identity — stamped due-date cards, catalog typography, reading-lamp green — rather than a generic municipal blue. Fraunces gives headlines warmth and a little friction; Space Mono stands in for the stamped, tactile parts of library life.</p>
+  </div>
+
+  <div class="hifi-shell">
+    <div class="hifi-topbar">
+      <span>Maple Grove, Somerset County</span>
+      <span>Mon–Thu 9–8 · Fri–Sat 9–5 · Sun Closed</span>
+    </div>
+    <div class="hifi-nav">
+      <div class="hifi-logo">
+        <div class="mark">MG</div>
+        <div class="word">Maple Grove<small>Public Library</small></div>
+      </div>
+      <ul class="hifi-navlinks">
+        <li><a href="#">Catalog</a></li>
+        <li><a href="#">Events</a></li>
+        <li><a href="#">Kids &amp; Teens</a></li>
+        <li><a href="#">Hours &amp; Locations</a></li>
+        <li><a href="#">About</a></li>
+      </ul>
+      <a href="#" class="hifi-navcta">Get a Card</a>
+    </div>
+
+    <div class="hifi-hero">
+      <span class="hifi-stamp">☙ Est. 1962</span>
+      <h1>Everything the library holds, <em>one search away.</em></h1>
+      <p>Books, audiobooks, DVDs, museum passes, and every event on the calendar — search it all from right here.</p>
+      <div class="hifi-search">
+        <input type="text" placeholder="Try “graphic novels for 8 year olds” or an author name">
+        <button>Search</button>
+      </div>
+      <div class="hifi-search-hint">↳ or browse new arrivals, staff picks, and this week's events below</div>
+    </div>
+
+    <div class="hifi-quicklinks">
+      <a href="#" class="ql-tile">
+        <div class="ico" style="background:var(--stamp-red);">🪪</div>
+        <h4>Get a Library Card</h4>
+        <span>Free for all Somerset County residents. Takes two minutes online.</span>
+        <span class="arrow">Sign up →</span>
+      </a>
+      <a href="#" class="ql-tile">
+        <div class="ico" style="background:var(--lamp-green);">🗝️</div>
+        <h4>Reserve a Room</h4>
+        <span>Study rooms and the community hall, bookable by the hour.</span>
+        <span class="arrow">Reserve →</span>
+      </a>
+      <a href="#" class="ql-tile">
+        <div class="ico" style="background:var(--ink-navy);">🧒</div>
+        <h4>Kids &amp; Teens</h4>
+        <span>Storytimes, homework help, and the Teen Zone reading list.</span>
+        <span class="arrow">Explore →</span>
+      </a>
+      <a href="#" class="ql-tile">
+        <div class="ico" style="background:#8a5a2b;">📅</div>
+        <h4>Events Calendar</h4>
+        <span>Author talks, workshops, and every branch's programming.</span>
+        <span class="arrow">See all →</span>
+      </a>
+    </div>
+
+    <div class="hifi-section">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">This week</span>
+          <h2>Upcoming events</h2>
+        </div>
+        <a href="#">View full calendar →</a>
+      </div>
+      <div class="events-grid">
+        <div class="event-card">
+          <div class="event-date"><span class="day">14</span><span class="mo">Jul</span></div>
+          <div class="event-card-body">
+            <h4>Local Authors Night</h4>
+            <p>Three Somerset County writers read from recent work, followed by Q&amp;A and light refreshments.</p>
+            <span class="event-tag">Main Branch · 6:30pm</span>
+          </div>
+        </div>
+        <div class="event-card">
+          <div class="event-date"><span class="day">17</span><span class="mo">Jul</span></div>
+          <div class="event-card-body">
+            <h4>Storytime &amp; Sing-Along</h4>
+            <p>Weekly storytime for ages 2–5 in the children's wing. Drop-ins welcome, no registration.</p>
+            <span class="event-tag">Elm St. Branch · 10:00am</span>
+          </div>
+        </div>
+        <div class="event-card">
+          <div class="event-date"><span class="day">21</span><span class="mo">Jul</span></div>
+          <div class="event-card-body">
+            <h4>Resume &amp; Job Search Help</h4>
+            <p>Drop-in one-on-one help with resumes, cover letters, and the library's job-search databases.</p>
+            <span class="event-tag">Main Branch · 2:00pm</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hifi-section alt">
+      <div class="hours-panel">
+        <div class="hours-card">
+          <h3>Today at Main Branch</h3>
+          <div class="hours-row today"><span>Today · Thu</span><span>9:00am – 8:00pm</span></div>
+          <div class="hours-row"><span>Friday</span><span>9:00am – 5:00pm</span></div>
+          <div class="hours-row"><span>Saturday</span><span>9:00am – 5:00pm</span></div>
+          <div class="hours-row"><span>Sunday</span><span>Closed</span></div>
+          <div class="hours-row"><span>Monday</span><span>9:00am – 8:00pm</span></div>
+        </div>
+        <div class="copy">
+          <span class="eyebrow">Two locations</span>
+          <h3>Main Branch &amp; the Elm St. Branch</h3>
+          <p>Both branches share one catalog and one library card. Request an item at either branch and pick it up at whichever is closer to you.</p>
+          <a href="#" class="btn-outline">Get directions &amp; full hours</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="hifi-footer">
+      <div class="footer-grid">
+        <div>
+          <h5>Maple Grove Public Library</h5>
+          <p style="color:#dbe1ee; font-size:13.5px; line-height:1.6; max-width:260px;">118 Elm Street, Maple Grove · Serving Somerset County since 1962.</p>
+        </div>
+        <div>
+          <h5>Visit</h5>
+          <a href="#">Hours &amp; Locations</a>
+          <a href="#">Meeting Rooms</a>
+          <a href="#">Directions</a>
+        </div>
+        <div>
+          <h5>Use</h5>
+          <a href="#">Catalog</a>
+          <a href="#">Get a Card</a>
+          <a href="#">Databases</a>
+        </div>
+        <div>
+          <h5>Connect</h5>
+          <a href="#">Newsletter</a>
+          <a href="#">Friends of the Library</a>
+          <a href="#">Contact</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Maple Grove Public Library</span>
+        <span>Accessibility · Privacy</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VIEW 4: USABILITY NOTES ============ -->
+<section class="view" id="notes">
+  <div class="view-intro">
+    <span class="eyebrow">Step 4</span>
+    <h2>What changed, and why it matters for use</h2>
+    <p>A side-by-side of the specific usability failures on the old site and the decision made to fix each one — the connective tissue between "the before screenshot looked bad" and an actual, defensible design decision.</p>
+  </div>
+
+  <div class="notes-list">
+    <div class="note-row head">
+      <span></span>
+      <span>Old pattern</span>
+      <span>Problem</span>
+      <span>New pattern</span>
+    </div>
+
+    <div class="note-row">
+      <span class="note-num">01</span>
+      <div class="note-col"><h5>Old</h5><p class="note-old">Catalog search lived on a separate "Catalog" page, reached via the top nav.</p></div>
+      <div class="note-col"><h5>Problem</h5><p>Search is the single highest-intent action on a library site. Hiding it costs every visitor an extra click and a moment of doubt.</p></div>
+      <div class="note-col"><h5>New</h5><p class="note-new">Search sits in the hero, above the fold, with placeholder text that models real queries.</p></div>
+    </div>
+
+    <div class="note-row">
+      <span class="note-num">02</span>
+      <div class="note-col"><h5>Old</h5><p class="note-old">Fourteen equal-weight top nav items, including departments most visitors never need.</p></div>
+      <div class="note-col"><h5>Problem</h5><p>A flat list with no priority forces visitors to read every label to find the one they want — high cognitive load for a five-second task.</p></div>
+      <div class="note-col"><h5>New</h5><p class="note-new">Nav trimmed to five core destinations; the four most common tasks get dedicated visual tiles instead of nav links.</p></div>
+    </div>
+
+    <div class="note-row">
+      <span class="note-num">03</span>
+      <div class="note-col"><h5>Old</h5><p class="note-old">A scrolling marquee notice and the library's mission statement given the same visual weight as a table of branch hours.</p></div>
+      <div class="note-col"><h5>Problem</h5><p>No hierarchy means visitors can't tell, at a glance, what's time-sensitive versus permanent — everything competes for attention equally.</p></div>
+      <div class="note-col"><h5>New</h5><p class="note-new">A dedicated "open now" hours card with today's row visually distinct; events get date-forward cards, not inline text.</p></div>
+    </div>
+
+    <div class="note-row">
+      <span class="note-num">04</span>
+      <div class="note-col"><h5>Old</h5><p class="note-old">A wall of blue underlined links for forms, minutes, and policies mixed in with the main content column.</p></div>
+      <div class="note-col"><h5>Problem</h5><p>Archival, low-frequency content pushes down the content people actually came for, and offers no visual cue about how current it is.</p></div>
+      <div class="note-col"><h5>New</h5><p class="note-new">Archival material moves entirely off the homepage into footer-linked sub-pages, keeping the front page focused on this week.</p></div>
+    </div>
+
+    <div class="note-row">
+      <span class="note-num">05</span>
+      <div class="note-col"><h5>Old</h5><p class="note-old">Fixed-width table layout, no responsive rules, footer note reading "Best viewed in 1024×768."</p></div>
+      <div class="note-col"><h5>Problem</h5><p>Most public-library visitors today are on a phone, often on a library-branch or limited data plan; a fixed-width table layout is effectively broken for them.</p></div>
+      <div class="note-col"><h5>New</h5><p class="note-new">Fluid grid layout with defined breakpoints — quick-link tiles, event cards, and the hours panel all reflow to single columns on mobile.</p></div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const tabs = document.querySelectorAll('.tab-btn');
+  const views = document.querySelectorAll('.view');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      views.forEach(v => v.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById(tab.dataset.view).classList.add('active');
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    });
+  });
+</script>
+
+</body>
+</html>
